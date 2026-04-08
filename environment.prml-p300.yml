@@ -1,0 +1,12 @@
+name: prml-p300
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - scipy
+  - scikit-learn
+  - joblib
+  - pip:
+      - torch

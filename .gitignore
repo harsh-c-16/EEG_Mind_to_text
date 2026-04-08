@@ -1,0 +1,27 @@
+# Python cache/artifacts
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.venv/
+venv/
+
+# Local environment and OS files
+.env
+.DS_Store
+
+# Experiment outputs and large artifacts
+outputs/
+*.pt
+*.joblib
+*.pkl
+*.npz
+*.zip
+*.tar
+*.gz
+
+# Logs
+*.log
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
