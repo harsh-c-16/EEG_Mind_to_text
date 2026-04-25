@@ -4,6 +4,7 @@ import argparse
 import glob
 import itertools
 import json
+import os
 import statistics
 from pathlib import Path
 
@@ -15,8 +16,8 @@ from eeg_bci.eegnet_pipeline import EEGNetConfig, train_eegnet_and_save
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Sweep EEGNet hyperparameters across all P300 subjects")
-    parser.add_argument("--data-dir", default="/scratch/b24cm1027/P300", help="Directory containing P300S*.mat files")
-    parser.add_argument("--output-dir", default="/csehome/b24cm1027/PRML/outputs/eegnet_sweep", help="Sweep output directory")
+    parser.add_argument("--data-dir", default=os.environ.get("DATA_DIR"), help="Directory containing P300S*.mat files (defaults to DATA_DIR env var)")
+    parser.add_argument("--output-dir", default=os.environ.get("OUTPUT_DIR"), help="Sweep output directory (defaults to OUTPUT_DIR env var)")
     parser.add_argument("--epochs", default="20,30", help="Comma-separated epochs list")
     parser.add_argument("--batch-sizes", default="32,64", help="Comma-separated batch size list")
     parser.add_argument("--lrs", default="0.001,0.0005", help="Comma-separated learning rates")
@@ -58,6 +59,10 @@ def _word_accuracy(decoded_words: list[str], target_words: list[str]) -> float:
 
 def main() -> None:
     args = parse_args()
+    if not args.data_dir:
+        raise EnvironmentError("--data-dir must be provided or DATA_DIR environment variable must be set.")
+    if not args.output_dir:
+        raise EnvironmentError("--output-dir must be provided or OUTPUT_DIR environment variable must be set.")
     data_files = sorted(glob.glob(str(Path(args.data_dir) / "P300S*.mat")))
     if not data_files:
         raise FileNotFoundError(f"No files matched {Path(args.data_dir) / 'P300S*.mat'}")
