@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import glob
 import json
+import os
 import statistics
 from pathlib import Path
 
@@ -10,8 +11,15 @@ from eeg_bci.eegnet_pipeline import EEGNetConfig, train_eegnet_and_save
 
 
 def main() -> None:
-    files = sorted(glob.glob('/scratch/b24cm1027/P300/P300S*.mat'))
-    base_out = Path('/csehome/b24cm1027/PRML/outputs/eegnet_all_subjects_gpu')
+    data_dir = os.environ.get('DATA_DIR')
+    if not data_dir:
+        raise EnvironmentError("DATA_DIR environment variable is not set. Set it to the directory containing P300S*.mat files.")
+    output_dir = os.environ.get('OUTPUT_DIR')
+    if not output_dir:
+        raise EnvironmentError("OUTPUT_DIR environment variable is not set. Set it to the desired output directory.")
+
+    files = sorted(glob.glob(str(Path(data_dir) / 'P300S*.mat')))
+    base_out = Path(output_dir)
     base_out.mkdir(parents=True, exist_ok=True)
 
     rows = []

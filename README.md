@@ -25,19 +25,19 @@ pip install -e .
 ## Training
 
 ```bash
-eeg-bci train --data /scratch/b24cm1027/P300/subject1.mat --model-dir outputs/model
+eeg-bci train --data /path/to/P300/subject1.mat --model-dir outputs/model
 ```
 
 ## Evaluation
 
 ```bash
-eeg-bci evaluate --data /scratch/b24cm1027/P300/subject1.mat --model-dir outputs/model
+eeg-bci evaluate --data /path/to/P300/subject1.mat --model-dir outputs/model
 ```
 
 ## Prediction
 
 ```bash
-eeg-bci predict --data /scratch/b24cm1027/P300/subject1.mat --model-dir outputs/model
+eeg-bci predict --data /path/to/P300/subject1.mat --model-dir outputs/model
 ```
 
 ## Notes

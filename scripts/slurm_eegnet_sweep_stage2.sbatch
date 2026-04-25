@@ -5,19 +5,23 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=24G
 #SBATCH --time=06:00:00
-#SBATCH -o /csehome/b24cm1027/PRML/outputs/eegnet_sweep_stage2/output.txt
-#SBATCH -e /csehome/b24cm1027/PRML/outputs/eegnet_sweep_stage2/error.txt
+#SBATCH -o ${OUTPUT_DIR}/output.txt
+#SBATCH -e ${OUTPUT_DIR}/error.txt
 
 set -euo pipefail
 
-mkdir -p /csehome/b24cm1027/PRML/outputs/eegnet_sweep_stage2
+: "${DATA_DIR:?DATA_DIR environment variable is not set}"
+: "${OUTPUT_DIR:?OUTPUT_DIR environment variable is not set}"
+: "${PROJECT_DIR:=${HOME}/PRML}"
 
-cd /csehome/b24cm1027/PRML
+mkdir -p "${OUTPUT_DIR}"
+
+cd "${PROJECT_DIR}"
 echo "Starting EEGNet stage2 sweep at $(date)"
 
 conda run -n prml-p300 env PYTHONPATH=src python scripts/tune_eegnet_sweep.py \
-  --data-dir /scratch/b24cm1027/P300 \
-  --output-dir /csehome/b24cm1027/PRML/outputs/eegnet_sweep_stage2 \
+  --data-dir "${DATA_DIR}" \
+  --output-dir "${OUTPUT_DIR}" \
   --max-combos 20 \
   --epochs 25,35 \
   --batch-sizes 32 \
